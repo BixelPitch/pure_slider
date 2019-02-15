@@ -77,7 +77,8 @@ var PureSlider = (function () {
             hasBtn: false,
             direction: this.options.direction,
             slidesLaps: [],
-            loader: null
+            loader: null,
+            timeoutSpawned: false
         }
     }
 
@@ -163,14 +164,18 @@ var PureSlider = (function () {
                 });
                 this.vars.slider.addEventListener('mouseleave', function (evt) {
                     evt.preventDefault();
-                    var to = window.setTimeout(function () {
-                        window.clearTimeout(to);
-                        if (self.vars.direction === 'forward') {
-                            self.next(true);
-                        } else {
-                            self.prev(true);
-                        }
-                    }, self.options.laps / 2);
+                    if (!self.vars.timeoutSpawned) {
+                        self.vars.timeoutSpawned = true
+                        var to = window.setTimeout(function () {
+                            window.clearTimeout(to);
+                            self.vars.timeoutSpawned = false;
+                            if (self.vars.direction === 'forward') {
+                                self.next(true);
+                            } else {
+                                self.prev(true);
+                            }
+                        }, self.options.laps / 2);
+                    }
                 });
             }
         },
