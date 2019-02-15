@@ -2,3 +2,4 @@
 /.idea/
 /dist/js/*.js
 /dist/css/*.css
+.DS_Store
